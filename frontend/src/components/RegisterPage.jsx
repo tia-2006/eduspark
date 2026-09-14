@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './RegisterPage.css';
 
-export default function RegisterPage({ onNavigateToLogin }) {
+export default function RegisterPage({ onNavigateToLogin, onRegisterSuccess }) {
   const [role, setRole] = useState('student');
   const [name, setName] = useState('John Doe');
   const [email, setEmail] = useState('john.doe@example.com');
@@ -120,6 +120,11 @@ export default function RegisterPage({ onNavigateToLogin }) {
       }
 
       setSuccessData(data);
+
+      // Notify parent App to transition to dashboard
+      if (onRegisterSuccess && data.user && data.token) {
+        onRegisterSuccess(data.user, data.token);
+      }
     } catch (err) {
       setErrorMessage(err.message || 'Unable to connect to registration server.');
     } finally {

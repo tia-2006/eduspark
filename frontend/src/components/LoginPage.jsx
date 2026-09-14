@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
 
-export default function LoginPage({ onNavigateToRegister }) {
+export default function LoginPage({ onNavigateToRegister, onLoginSuccess }) {
   const [role, setRole] = useState('student');
   const [email, setEmail] = useState('john.doe@example.com');
   const [password, setPassword] = useState('password123');
@@ -92,6 +92,11 @@ export default function LoginPage({ onNavigateToRegister }) {
       }
 
       setSuccessData(data);
+
+      // Notify parent App to transition to dashboard
+      if (onLoginSuccess && data.user && data.token) {
+        onLoginSuccess(data.user, data.token);
+      }
     } catch (err) {
       setErrorMessage(err.message || 'Unable to connect to authentication server.');
     } finally {
