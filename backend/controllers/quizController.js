@@ -2,108 +2,209 @@ const Quiz = require("../models/Quiz");
 const Class = require("../models/Class");
 const mongoose = require("mongoose");
 
+// Default 5 sample questions for Public Speaking
+const defaultPublicSpeakingQuestions = [
+    {
+        questionText: "What is the primary goal of an opening hook in a speech?",
+        options: [
+            "To state your full name and credentials",
+            "To capture the audience's attention immediately",
+            "To thank the organizers at length",
+            "To read out the agenda"
+        ],
+        correctAnswer: 1,
+        explanation: "An opening hook engages the audience right away."
+    },
+    {
+        questionText: "Which non-verbal cue builds trust with an audience?",
+        options: [
+            "Avoiding eye contact",
+            "Sustained, natural eye contact",
+            "Pacing quickly across the stage",
+            "Keeping hands in pockets"
+        ],
+        correctAnswer: 1,
+        explanation: "Eye contact creates connection and demonstrates confidence."
+    },
+    {
+        questionText: "What does the 'Rule of Three' recommend in presentation design?",
+        options: [
+            "Speaking for only 3 minutes",
+            "Grouping ideas or points in triads for memorability",
+            "Using 3 different presentation slides",
+            "Repeating every sentence 3 times"
+        ],
+        correctAnswer: 1,
+        explanation: "Information structured in threes is easier for audiences to process and remember."
+    },
+    {
+        questionText: "How should a speaker handle stage fright before giving a talk?",
+        options: [
+            "Avoid practicing to keep energy fresh",
+            "Use deep breathing exercises and thorough preparation",
+            "Speak as fast as possible to finish quickly",
+            "Focus on mistakes made in past speeches"
+        ],
+        correctAnswer: 1,
+        explanation: "Deep breathing calms the nervous system while preparation boosts confidence."
+    },
+    {
+        questionText: "What is vocal variety in public speaking?",
+        options: [
+            "Speaking in a single monotone pitch throughout",
+            "Varying pitch, tone, pace, and volume to keep the audience engaged",
+            "Whispering during the entire presentation",
+            "Shouting key terms randomly"
+        ],
+        correctAnswer: 1,
+        explanation: "Varying your voice keeps listeners engaged and emphasizes key points effectively."
+    }
+];
+
+// Default 5 sample questions for Strategic Chess
+const defaultChessQuestions = [
+    {
+        questionText: "What is a primary objective during the opening phase of chess?",
+        options: [
+            "Control the center, develop pieces, and castle for king safety",
+            "Checkmate the opponent in under 4 moves",
+            "Move your queen out early to attack",
+            "Push all edge pawns forward"
+        ],
+        correctAnswer: 0,
+        explanation: "Center control and piece development set up a strong mid-game."
+    },
+    {
+        questionText: "What is a 'fork' in chess tactic terminology?",
+        options: [
+            "Sacrificing a pawn for position",
+            "A single piece attacking two or more opponent pieces simultaneously",
+            "Trapping the opponent's king in the corner",
+            "Exchanging queens early"
+        ],
+        correctAnswer: 1,
+        explanation: "A fork forces the opponent to prioritize protecting one piece while losing another."
+    },
+    {
+        questionText: "Which piece is famous for creating unpredictable forks due to L-shaped jumps?",
+        options: [
+            "Bishop",
+            "Rook",
+            "Knight",
+            "Queen"
+        ],
+        correctAnswer: 2,
+        explanation: "Knights can jump over pieces to fork high-value targets."
+    },
+    {
+        questionText: "What does 'pinning' a piece mean in tactical chess play?",
+        options: [
+            "Preventing a piece from moving because moving it exposes a higher value target behind it",
+            "Trapping a pawn at the edge of the board",
+            "Promoting a pawn to a second queen",
+            "Trading knights for bishops early"
+        ],
+        correctAnswer: 0,
+        explanation: "A pin restricts an opponent's piece from moving because a valuable piece sits behind it."
+    },
+    {
+        questionText: "What is the main goal in the endgame stage of chess?",
+        options: [
+            "Castle as quickly as possible",
+            "Promote passed pawns and deliver checkmate with remaining active pieces",
+            "Trade off all remaining pieces for a stalemate",
+            "Keep all pawns on their starting squares"
+        ],
+        correctAnswer: 1,
+        explanation: "In endgames with few pieces left, promoting passed pawns is crucial to secure victory."
+    }
+];
+
+// Initial sample classes fallback in case Class collection is empty
+const defaultClasses = [
+    {
+        title: "Mastering Public Speaking & Presentation Skills",
+        skill: "Public Speaking",
+        category: "Communication",
+        description: "Learn to articulate your ideas with confidence, master voice modulation, body language, and stage presence.",
+        mentor: "Sarah Jenkins",
+        level: "Beginner",
+        duration: "4 Weeks",
+        sampleLessonUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        isPublished: true
+    },
+    {
+        title: "Strategic Chess & Tactical Mastery",
+        skill: "Strategic Chess",
+        category: "Strategy",
+        description: "Develop critical thinking, opening strategies, tactical vision, and endgame mastery with expert guidance.",
+        mentor: "Alex Rivera",
+        level: "Intermediate",
+        duration: "6 Weeks",
+        sampleLessonUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        isPublished: true
+    }
+];
+
 // Initial sample quizzes linked to default classes
 const seedInitialQuizzesIfEmpty = async () => {
     try {
-        const quizCount = await Quiz.countDocuments();
-        if (quizCount > 0) return;
+        let publicSpeakingClass = await Class.findOne({ skill: new RegExp("Public Speaking", "i") });
+        let chessClass = await Class.findOne({ skill: new RegExp("Strategic Chess", "i") });
 
-        // Find classes to link quizzes
-        const publicSpeakingClass = await Class.findOne({ skill: new RegExp("Public Speaking", "i") });
-        const chessClass = await Class.findOne({ skill: new RegExp("Strategic Chess", "i") });
-
-        const sampleQuizzes = [];
+        if (!publicSpeakingClass || !chessClass) {
+            const classCount = await Class.countDocuments();
+            if (classCount === 0) {
+                await Class.insertMany(defaultClasses);
+                publicSpeakingClass = await Class.findOne({ skill: new RegExp("Public Speaking", "i") });
+                chessClass = await Class.findOne({ skill: new RegExp("Strategic Chess", "i") });
+            }
+        }
 
         if (publicSpeakingClass) {
-            sampleQuizzes.push({
-                classId: publicSpeakingClass._id,
-                title: "Public Speaking & Communication Quiz",
-                description: "Test your understanding of speech structure, non-verbal cues, and audience engagement.",
-                passingPercentage: 60,
-                questions: [
-                    {
-                        questionText: "What is the primary goal of an opening hook in a speech?",
-                        options: [
-                            "To state your full name and credentials",
-                            "To capture the audience's attention immediately",
-                            "To thank the organizers at length",
-                            "To read out the agenda"
-                        ],
-                        correctAnswer: 1,
-                        explanation: "An opening hook engages the audience right away."
-                    },
-                    {
-                        questionText: "Which non-verbal cue builds trust with an audience?",
-                        options: [
-                            "Avoiding eye contact",
-                            "Sustained, natural eye contact",
-                            "Pacing quickly across the stage",
-                            "Keeping hands in pockets"
-                        ],
-                        correctAnswer: 1,
-                        explanation: "Eye contact creates connection and demonstrates confidence."
-                    },
-                    {
-                        questionText: "What does the 'Rule of Three' recommend in presentation design?",
-                        options: [
-                            "Speaking for only 3 minutes",
-                            "Grouping ideas or points in triads for memorability",
-                            "Using 3 different presentation slides",
-                            "Repeating every sentence 3 times"
-                        ],
-                        correctAnswer: 1,
-                        explanation: "Information structured in threes is easier for audiences to process and remember."
-                    }
+            let psQuiz = await Quiz.findOne({
+                $or: [
+                    { classId: publicSpeakingClass._id },
+                    { title: new RegExp("Public Speaking", "i") }
                 ]
             });
+
+            if (!psQuiz) {
+                await Quiz.create({
+                    classId: publicSpeakingClass._id,
+                    title: "Public Speaking & Communication Quiz",
+                    description: "Test your understanding of speech structure, non-verbal cues, and audience engagement.",
+                    passingPercentage: 60,
+                    questions: defaultPublicSpeakingQuestions
+                });
+            } else if (psQuiz.questions.length < 5 || !psQuiz.classId.equals(publicSpeakingClass._id)) {
+                psQuiz.classId = publicSpeakingClass._id;
+                psQuiz.questions = defaultPublicSpeakingQuestions;
+                await psQuiz.save();
+            }
         }
 
         if (chessClass) {
-            sampleQuizzes.push({
-                classId: chessClass._id,
-                title: "Strategic Chess Principles Quiz",
-                description: "Evaluate your knowledge of opening rules, tactical forks, and endgame strategies.",
-                passingPercentage: 60,
-                questions: [
-                    {
-                        questionText: "What is a primary objective during the opening phase of chess?",
-                        options: [
-                            "Control the center, develop pieces, and castle for king safety",
-                            "Checkmate the opponent in under 4 moves",
-                            "Move your queen out early to attack",
-                            "Push all edge pawns forward"
-                        ],
-                        correctAnswer: 0,
-                        explanation: "Center control and piece development set up a strong mid-game."
-                    },
-                    {
-                        questionText: "What is a 'fork' in chess tactic terminology?",
-                        options: [
-                            "Sacrificing a pawn for position",
-                            "A single piece attacking two or more opponent pieces simultaneously",
-                            "Trapping the opponent's king in the corner",
-                            "Exchanging queens early"
-                        ],
-                        correctAnswer: 1,
-                        explanation: "A fork forces the opponent to prioritize protecting one piece while losing another."
-                    },
-                    {
-                        questionText: "Which piece is famous for creating unpredictable forks due to L-shaped jumps?",
-                        options: [
-                            "Bishop",
-                            "Rook",
-                            "Knight",
-                            "Queen"
-                        ],
-                        correctAnswer: 2,
-                        explanation: "Knights can jump over pieces to fork high-value targets."
-                    }
+            let chessQuiz = await Quiz.findOne({
+                $or: [
+                    { classId: chessClass._id },
+                    { title: new RegExp("Strategic Chess", "i") }
                 ]
             });
-        }
 
-        if (sampleQuizzes.length > 0) {
-            await Quiz.insertMany(sampleQuizzes);
+            if (!chessQuiz) {
+                await Quiz.create({
+                    classId: chessClass._id,
+                    title: "Strategic Chess Principles Quiz",
+                    description: "Evaluate your knowledge of opening rules, tactical forks, and endgame strategies.",
+                    passingPercentage: 60,
+                    questions: defaultChessQuestions
+                });
+            } else if (chessQuiz.questions.length < 5 || !chessQuiz.classId.equals(chessClass._id)) {
+                chessQuiz.classId = chessClass._id;
+                chessQuiz.questions = defaultChessQuestions;
+                await chessQuiz.save();
+            }
         }
     } catch (error) {
         console.error("Error seeding initial quizzes:", error.message);
@@ -115,10 +216,44 @@ const findQuizByIdOrClassId = async (identifier) => {
     if (!mongoose.Types.ObjectId.isValid(identifier)) {
         return null;
     }
+
     let quiz = await Quiz.findById(identifier);
     if (!quiz) {
         quiz = await Quiz.findOne({ classId: identifier });
     }
+
+    if (!quiz) {
+        const targetClass = await Class.findById(identifier);
+        if (targetClass) {
+            const isChess = /chess/i.test(targetClass.skill) || /chess/i.test(targetClass.title);
+            const questions = isChess ? defaultChessQuestions : defaultPublicSpeakingQuestions;
+            const title = targetClass.title ? `${targetClass.title} Quiz` : "Class Quiz";
+
+            quiz = await Quiz.findOne({
+                $or: [
+                    { title: new RegExp(targetClass.skill, "i") },
+                    { title: new RegExp(targetClass.title, "i") }
+                ]
+            });
+
+            if (quiz) {
+                quiz.classId = targetClass._id;
+                if (quiz.questions.length < 5) {
+                    quiz.questions = questions;
+                }
+                await quiz.save();
+            } else {
+                quiz = await Quiz.create({
+                    classId: targetClass._id,
+                    title: title,
+                    description: `Quiz for ${targetClass.title}`,
+                    passingPercentage: 60,
+                    questions: questions
+                });
+            }
+        }
+    }
+
     return quiz;
 };
 
@@ -137,10 +272,7 @@ const getQuizById = async (req, res) => {
             });
         }
 
-        let quiz = await Quiz.findById(id).select("-questions.correctAnswer");
-        if (!quiz) {
-            quiz = await Quiz.findOne({ classId: id }).select("-questions.correctAnswer");
-        }
+        let quiz = await findQuizByIdOrClassId(id);
 
         if (!quiz) {
             return res.status(404).json({
@@ -148,9 +280,17 @@ const getQuizById = async (req, res) => {
             });
         }
 
+        const quizObj = quiz.toObject ? quiz.toObject() : quiz;
+        if (quizObj.questions && Array.isArray(quizObj.questions)) {
+            quizObj.questions = quizObj.questions.map(q => {
+                const { correctAnswer, ...rest } = q;
+                return rest;
+            });
+        }
+
         res.status(200).json({
             success: true,
-            quiz
+            quiz: quizObj
         });
     } catch (error) {
         res.status(500).json({
@@ -269,3 +409,4 @@ module.exports = {
     getQuizById,
     submitQuiz
 };
+
