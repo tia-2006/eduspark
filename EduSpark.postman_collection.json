@@ -314,6 +314,363 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Submissions",
+			"item": [
+				{
+					"name": "Create Submission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"questId\": \"650000000000000000000001\",\n  \"content\": \"Here is my pitch video submission: https://example.com/pitch-video\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/submissions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"submissions"
+							]
+						},
+						"description": "Creates a quest submission. Student ID is derived from the Bearer JWT token."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Mentor Submissions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/submissions/mentor",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"submissions",
+								"mentor"
+							]
+						},
+						"description": "Retrieves submissions for mentor review."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Submission by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/submissions/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"submissions",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "650000000000000000000001",
+									"description": "Submission ID"
+								}
+							]
+						},
+						"description": "Retrieves detailed information for a specific submission by ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Provide Mentor Feedback",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"score\": 90,\n  \"mentorFeedback\": \"Great structure, clear delivery, and good body language!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/submissions/:id/feedback",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"submissions",
+								":id",
+								"feedback"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "650000000000000000000001",
+									"description": "Submission ID"
+								}
+							]
+						},
+						"description": "Allows mentors to evaluate a submission by providing feedback and a score."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mentor Applications",
+			"item": [
+				{
+					"name": "Apply for Mentor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"skill\": \"Public Speaking\",\n  \"experience\": \"5 years coaching debate teams\",\n  \"bio\": \"Experienced public speaker helping students develop confidence.\",\n  \"demoLessonUrl\": \"https://example.com/demo-lesson\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/mentors/apply",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"mentors",
+								"apply"
+							]
+						},
+						"description": "Submits a mentor application for the authenticated user."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Mentor Applications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/mentors/applications",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"mentors",
+								"applications"
+							]
+						},
+						"description": "Retrieves all mentor applications (Admin only)."
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Mentor Application",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/mentors/:id/approve",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"mentors",
+								":id",
+								"approve"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "650000000000000000000001",
+									"description": "Application ID or User ID"
+								}
+							]
+						},
+						"description": "Approves a mentor application, converting the user's role to mentor and setting isVerified to true (Admin only)."
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Mentor Application",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/mentors/:id/reject",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"mentors",
+								":id",
+								"reject"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "650000000000000000000001",
+									"description": "Application ID or User ID"
+								}
+							]
+						},
+						"description": "Rejects a mentor application (Admin only)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "School Dashboard",
+			"item": [
+				{
+					"name": "Get School Dashboard Stats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/school/dashboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"school",
+								"dashboard"
+							]
+						},
+						"description": "Retrieves school dashboard statistics including total students, total classes, published classes, quizzes, and submissions (School Admin and Admin only)."
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [

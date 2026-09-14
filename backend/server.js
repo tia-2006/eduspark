@@ -7,6 +7,9 @@ const authRoutes = require("./routes/authRoutes");
 const classRoutes = require("./routes/classRoutes");
 const quizRoutes = require("./routes/quizRoutes");
 const questRoutes = require("./routes/questRoutes");
+const submissionRoutes = require("./routes/submissionRoutes");
+const mentorRoutes = require("./routes/mentorRoutes");
+const schoolRoutes = require("./routes/schoolRoutes");
 
 dotenv.config();
 
@@ -28,6 +31,15 @@ app.use("/api/quizzes", quizRoutes);
 
 // Quests routes
 app.use("/api/quests", questRoutes);
+
+// Submissions routes
+app.use("/api/submissions", submissionRoutes);
+
+// Mentor Applications routes
+app.use("/api/mentors", mentorRoutes);
+
+// School Dashboard routes
+app.use("/api/school", schoolRoutes);
 
 app.get("/", (req, res) => {
     res.send("EduSpark Backend is running!");
