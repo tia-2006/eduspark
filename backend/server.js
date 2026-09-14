@@ -4,6 +4,9 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
+const classRoutes = require("./routes/classRoutes");
+const quizRoutes = require("./routes/quizRoutes");
+const questRoutes = require("./routes/questRoutes");
 
 dotenv.config();
 
@@ -16,6 +19,15 @@ app.use(express.json());
 
 // Authentication routes
 app.use("/api/auth", authRoutes);
+
+// Classes routes
+app.use("/api/classes", classRoutes);
+
+// Quizzes routes
+app.use("/api/quizzes", quizRoutes);
+
+// Quests routes
+app.use("/api/quests", questRoutes);
 
 app.get("/", (req, res) => {
     res.send("EduSpark Backend is running!");

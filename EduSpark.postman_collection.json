@@ -142,6 +142,178 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Classes",
+			"item": [
+				{
+					"name": "Get All Classes",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/classes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"classes"
+							]
+						},
+						"description": "Retrieves all published classes available on EduSpark, including Public Speaking and Strategic Chess."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Class by ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/classes/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "650000000000000000000001",
+									"description": "The unique ID of the class"
+								}
+							]
+						},
+						"description": "Retrieves detailed information for a specific class by its unique ID."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quizzes",
+			"item": [
+				{
+					"name": "Get Quiz by ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/quizzes/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"quizzes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "650000000000000000000001",
+									"description": "Quiz ID or Class ID"
+								}
+							]
+						},
+						"description": "Retrieves quiz details excluding correct answers."
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Quiz Answers",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"answers\": [1, 1, 1]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/quizzes/:id/submit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"quizzes",
+								":id",
+								"submit"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "650000000000000000000001",
+									"description": "Quiz ID or Class ID"
+								}
+							]
+						},
+						"description": "Submits answers for evaluation and returns score, totalQuestions, percentage, and pass/fail status."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SkillQuests",
+			"item": [
+				{
+					"name": "Get Quest by ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/quests/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"quests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "650000000000000000000001",
+									"description": "Quest ID or Class ID"
+								}
+							]
+						},
+						"description": "Retrieves details for a specific SkillQuest including title, description, instructions, skill, classId, maxScore, and status."
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [
