@@ -127,7 +127,7 @@ export default function ExplorePage({ onNavigate }) {
             <ClassCard
               key={cls._id}
               cls={cls}
-              onTakeQuiz={(classId) => onNavigate('quizzes', { classId })}
+              onTakeQuiz={(classId) => onNavigate('classes', { classId })}
             />
           ))}
         </div>
@@ -135,3 +135,4 @@ export default function ExplorePage({ onNavigate }) {
     </div>
   );
 }
+

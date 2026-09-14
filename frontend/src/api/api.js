@@ -45,6 +45,15 @@ export const apiGetClasses = (params = {}) => {
 
 export const apiGetClassById = (id) => authFetch(`/classes/${id}`);
 
+export const apiGetModuleDetails = () => authFetch('/classes/module-details');
+
+export const apiAnalyzeArgument = (statement) =>
+  authFetch('/classes/analyze-argument', {
+    method: 'POST',
+    body: JSON.stringify({ statement }),
+  });
+
+
 // ── QUIZZES ─────────────────────────────────────
 export const apiGetQuiz = (id) => authFetch(`/quizzes/${id}`);
 

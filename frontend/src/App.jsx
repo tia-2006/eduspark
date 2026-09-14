@@ -13,6 +13,7 @@ import MentorHubPage from './components/MentorHub/MentorHubPage';
 import SchoolAnalyticsPage from './components/SchoolAnalytics/SchoolAnalyticsPage';
 import AdminPortalPage from './components/AdminPortal/AdminPortalPage';
 import SkillPassportPage from './components/SkillPassport/SkillPassportPage';
+import ModuleLearningPage from './components/ModuleLearning/ModuleLearningPage';
 
 // Auth pages (existing)
 import LoginPage from './components/LoginPage';
@@ -93,7 +94,7 @@ export default function App() {
     switch (currentPage) {
       case 'dashboard':       return <DashboardPage {...props} />;
       case 'explore':         return <ExplorePage {...props} />;
-      case 'classes':         return <ExplorePage {...props} />;
+      case 'classes':         return <ModuleLearningPage {...props} />;
       case 'quizzes':         return <QuizzesPage {...props} />;
       case 'skill-passport':  return <SkillPassportPage {...props} />;
       case 'mentor-hub':      return <MentorHubPage {...props} />;
@@ -102,6 +103,7 @@ export default function App() {
       default:                return <DashboardPage {...props} />;
     }
   };
+
 
   const handleRoleTabChange = (roleTab) => {
     setActiveRoleTab(roleTab);

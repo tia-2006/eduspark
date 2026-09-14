@@ -262,10 +262,11 @@ export default function DashboardPage({ user, onNavigate }) {
                     key={cls._id}
                     cls={cls}
                     quest={getQuestForClass(cls)}
-                    onStartQuiz={() => onNavigate('quizzes')}
-                    onStartQuest={() => onNavigate('quizzes')}
+                    onStartQuiz={() => onNavigate('classes')}
+                    onStartQuest={() => onNavigate('classes')}
                   />
                 ))}
+
               </div>
             )}
           </section>
