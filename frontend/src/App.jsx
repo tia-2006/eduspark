@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { loadSession, saveSession, clearSession, apiLogin, apiRegister } from './api/api';
+import { loadSession, saveSession, clearSession } from './api/api';
 
 // Layout
 import Sidebar from './components/Layout/Sidebar';
@@ -26,6 +26,7 @@ export default function App() {
   const [navState, setNavState] = useState({}); // extra state for navigation (e.g. classId)
   const [authView, setAuthView] = useState('login'); // 'login' | 'register'
   const [activeRoleTab, setActiveRoleTab] = useState('Student');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Load session on mount
   useEffect(() => {
@@ -61,6 +62,11 @@ export default function App() {
   const navigate = (page, state = {}) => {
     setCurrentPage(page);
     setNavState(state);
+  };
+
+  // Toggle sidebar
+  const toggleSidebar = () => {
+    setSidebarCollapsed(prev => !prev);
   };
 
   // If not logged in, show auth pages
@@ -103,13 +109,16 @@ export default function App() {
         currentPage={currentPage}
         onNavigate={navigate}
         user={session.user}
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={toggleSidebar}
       />
-      <div className="app-main">
+      <div className={`app-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
         <Navbar
           user={session.user}
           onLogout={handleLogout}
           activeRoleTab={activeRoleTab}
           onRoleTabChange={setActiveRoleTab}
+          sidebarCollapsed={sidebarCollapsed}
         />
         <main className="app-content">
           {renderPage()}
