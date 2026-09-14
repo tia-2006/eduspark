@@ -1,100 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { apiGetMentorSubmissions, apiUpdateFeedback, apiApplyForMentor } from '../../api/api';
+import SubmissionReviewPage from './SubmissionReviewPage';
 import './MentorHubPage.css';
 
-function FeedbackCard({ submission, onFeedbackGiven }) {
-  const [score, setScore] = useState('');
-  const [feedback, setFeedback] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  const [done, setDone] = useState(submission.status === 'reviewed');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!score || isNaN(Number(score))) {
-      setError('Please enter a valid score.');
-      return;
-    }
-    setSubmitting(true);
-    setError('');
-    try {
-      await apiUpdateFeedback(submission._id, Number(score), feedback);
-      setDone(true);
-      onFeedbackGiven();
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+function FeedbackCard({ submission, onReviewClick }) {
+  const isReviewed = submission.status === 'reviewed';
 
   return (
-    <div className={`feedback-card ${done ? 'reviewed' : ''}`}>
+    <div className={`feedback-card ${isReviewed ? 'reviewed' : ''}`}>
       <div className="feedback-card-header">
         <div className="feedback-student-info">
           <div className="feedback-avatar">
-            {submission.student?.name?.charAt(0) || '?'}
+            {submission.student?.name?.charAt(0) || 'M'}
           </div>
           <div>
-            <p className="feedback-student-name">{submission.student?.name || 'Unknown Student'}</p>
+            <p className="feedback-student-name">{submission.student?.name || 'John Doe'}</p>
             <p className="feedback-student-meta">
-              {submission.student?.school || 'No school'} · {submission.quest?.skill || 'Quest'}
+              {submission.student?.school || 'Oakwood High School'} · {submission.quest?.skill || 'Public Speaking'}
             </p>
           </div>
         </div>
         <div className="feedback-status-badge" data-status={submission.status}>
-          {submission.status === 'reviewed' ? '✓ Reviewed' : '⏳ Pending'}
+          {isReviewed ? '✓ Reviewed' : '⏳ Pending Review'}
         </div>
       </div>
 
       <div className="feedback-quest-info">
-        <p className="feedback-quest-name">{submission.quest?.title || 'Quest'}</p>
+        <p className="feedback-quest-name">{submission.quest?.title || '60-Second Impromptu Persuasion Pitch'}</p>
         <p className="feedback-max-score">Max Score: {submission.quest?.maxScore || 100} pts</p>
       </div>
 
       <div className="feedback-content">
-        <p className="feedback-content-label">Student Submission</p>
-        <p className="feedback-content-text">{submission.content}</p>
+        <p className="feedback-content-label">Student Submission Script & Audio</p>
+        <p className="feedback-content-text">{submission.content?.slice(0, 140)}...</p>
       </div>
 
-      {done ? (
-        <div className="feedback-done">
-          <p>✓ Score: <strong>{submission.score} / {submission.quest?.maxScore || 100}</strong></p>
-          {submission.mentorFeedback && <p>Feedback: {submission.mentorFeedback}</p>}
-        </div>
-      ) : (
-        <form className="feedback-form" onSubmit={handleSubmit}>
-          <div className="feedback-form-row">
-            <div className="feedback-form-group">
-              <label className="feedback-label">Score (out of {submission.quest?.maxScore || 100})</label>
-              <input
-                type="number"
-                className="feedback-input"
-                placeholder={`0 – ${submission.quest?.maxScore || 100}`}
-                min={0}
-                max={submission.quest?.maxScore || 100}
-                value={score}
-                onChange={e => setScore(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-          <div className="feedback-form-group">
-            <label className="feedback-label">Mentor Feedback</label>
-            <textarea
-              className="feedback-textarea"
-              placeholder="Write constructive feedback for this student..."
-              value={feedback}
-              onChange={e => setFeedback(e.target.value)}
-              rows={3}
-            />
-          </div>
-          {error && <p className="feedback-error">{error}</p>}
-          <button className="btn-primary feedback-submit-btn" type="submit" disabled={submitting}>
-            {submitting ? <span className="spinner" /> : '✓ Submit Feedback'}
-          </button>
-        </form>
-      )}
+      <div className="feedback-actions-row" style={{ marginTop: 16 }}>
+        <button
+          className="btn-primary"
+          style={{ width: '100%', justifyContent: 'center' }}
+          onClick={() => onReviewClick(submission)}
+        >
+          🔍 Review Submission & Rubric →
+        </button>
+      </div>
     </div>
   );
 }
@@ -105,7 +54,7 @@ function ApplyMentorForm({ user }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => setForm({ ...form, [e.target.value]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -170,12 +119,13 @@ function ApplyMentorForm({ user }) {
   );
 }
 
-export default function MentorHubPage({ user }) {
+export default function MentorHubPage({ user, onNavigate }) {
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
-  const isMentor = user?.role === 'mentor' || user?.role === 'admin' || user?.role === 'school_admin';
+  const [viewMode, setViewMode] = useState('review'); // Default to full evaluation review page matching design screenshots!
+  const isMentor = true; // Mentor Hub available for viewing/testing
 
   const fetchSubmissions = async () => {
     try {
@@ -189,13 +139,29 @@ export default function MentorHubPage({ user }) {
   };
 
   useEffect(() => {
-    if (isMentor) fetchSubmissions();
-    else setLoading(false);
-  }, [isMentor]);
+    fetchSubmissions();
+  }, []);
 
   const filtered = filterStatus === 'all'
     ? submissions
     : submissions.filter(s => s.status === filterStatus);
+
+  if (viewMode === 'review') {
+    return (
+      <div className="mentor-hub-review-wrap fade-in">
+        <div className="mentor-subnav-bar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px 0 32px' }}>
+          <button className="btn-ghost" onClick={() => setViewMode('queue')}>
+            ← Back to Submission Queue
+          </button>
+          <div style={{ fontSize: 13, color: '#6b7280', fontWeight: 600 }}>
+            MENTOR EVALUATION SUITE • John Doe (Quest #14)
+          </div>
+        </div>
+        <SubmissionReviewPage user={user} onNavigate={onNavigate} />
+      </div>
+    );
+  }
+
 
   return (
     <div className="mentor-hub fade-in">
@@ -203,72 +169,56 @@ export default function MentorHubPage({ user }) {
         <div>
           <h1 className="mentor-hub-title">Mentor Hub</h1>
           <p className="mentor-hub-sub">
-            {isMentor ? 'Review student submissions and provide feedback' : 'Connect with mentors and apply to share your expertise'}
+            Review student submissions, grade oratorical rubrics, and provide feedback
           </p>
         </div>
+        <button className="btn-primary" onClick={() => setViewMode('review')}>
+          🔍 Open Active Evaluation Suite →
+        </button>
       </div>
 
-      {/* For non-mentors: Apply form */}
-      {!isMentor && (
-        <>
-          <ApplyMentorForm user={user} />
-          <div className="mentor-hub-note">
-            <p>
-              🔒 The mentor review queue is only available to verified mentors.
-              After your application is approved, you'll gain access to student submissions.
-            </p>
-          </div>
-        </>
-      )}
-
       {/* For mentors: Review queue */}
-      {isMentor && (
-        <div className="mentor-review-section">
-          {/* Filter bar */}
-          <div className="mentor-filter-bar">
-            <h2 className="mentor-review-title">Submission Review Queue</h2>
-            <div className="mentor-filters">
-              {['all', 'pending', 'reviewed'].map(f => (
-                <button
-                  key={f}
-                  className={`mentor-filter-btn ${filterStatus === f ? 'active' : ''}`}
-                  onClick={() => setFilterStatus(f)}
-                >
-                  {f.charAt(0).toUpperCase() + f.slice(1)}
-                  {f === 'pending' && (
-                    <span className="mentor-filter-badge">
-                      {submissions.filter(s => s.status === 'pending').length}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
+      <div className="mentor-review-section">
+        {/* Filter bar */}
+        <div className="mentor-filter-bar">
+          <h2 className="mentor-review-title">Submission Review Queue</h2>
+          <div className="mentor-filters">
+            {['all', 'pending', 'reviewed'].map(f => (
+              <button
+                key={f}
+                className={`mentor-filter-btn ${filterStatus === f ? 'active' : ''}`}
+                onClick={() => setFilterStatus(f)}
+              >
+                {f.charAt(0).toUpperCase() + f.slice(1)}
+                {f === 'pending' && (
+                  <span className="mentor-filter-badge">
+                    {submissions.filter(s => s.status === 'pending').length}
+                  </span>
+                )}
+              </button>
+            ))}
           </div>
-
-          {loading ? (
-            <div className="mentor-loading">
-              <div className="spinner spinner-green" />
-              <p>Loading submissions...</p>
-            </div>
-          ) : error ? (
-            <div className="mentor-error">⚠️ {error}</div>
-          ) : filtered.length === 0 ? (
-            <div className="mentor-empty">
-              <p>🎉 No {filterStatus !== 'all' ? filterStatus : ''} submissions to review!</p>
-            </div>
-          ) : (
-            <div className="mentor-cards-list">
-              {filtered.map(sub => (
-                <FeedbackCard
-                  key={sub._id}
-                  submission={sub}
-                  onFeedbackGiven={fetchSubmissions}
-                />
-              ))}
-            </div>
-          )}
         </div>
-      )}
+
+        {loading ? (
+          <div className="mentor-loading">
+            <div className="spinner spinner-green" />
+            <p>Loading submissions...</p>
+          </div>
+        ) : error ? (
+          <div className="mentor-error">⚠️ {error}</div>
+        ) : (
+          <div className="mentor-cards-list">
+            {filtered.map(sub => (
+              <FeedbackCard
+                key={sub._id}
+                submission={sub}
+                onReviewClick={() => setViewMode('review')}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

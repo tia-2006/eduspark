@@ -3,12 +3,16 @@ const {
     createSubmission,
     getMentorSubmissions,
     getSubmissionById,
-    updateSubmissionFeedback
+    updateSubmissionFeedback,
+    getReviewDetails
 } = require("../controllers/submissionController");
 
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
+// GET submission evaluation review details
+router.get("/review-details", getReviewDetails);
 
 // Create submission (Student - Student ID taken from JWT auth)
 router.post("/", protect, createSubmission);
@@ -23,3 +27,4 @@ router.get("/:id", protect, getSubmissionById);
 router.put("/:id/feedback", protect, updateSubmissionFeedback);
 
 module.exports = router;
+

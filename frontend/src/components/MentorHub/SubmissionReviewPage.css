@@ -1,0 +1,775 @@
+/* =========================================================
+   SUBMISSION REVIEW PAGE CSS (EDUSPARK MENTOR HUB)
+   ========================================================= */
+
+.submission-review-container {
+  padding: 24px 32px 60px 32px;
+  max-width: 1440px;
+  margin: 0 auto;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  color: #1f2937;
+}
+
+.review-page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+  color: #6b7280;
+}
+
+/* Student Header Card */
+.review-student-header-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.student-info-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.student-avatar-wrap {
+  position: relative;
+}
+
+.student-avatar-img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-online-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+}
+
+.student-name-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.name-grade-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.student-name-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.grade-pill {
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.student-school-club {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 4px 0 0 0;
+}
+
+.attempt-details-right {
+  text-align: right;
+}
+
+.attempt-kicker {
+  font-size: 10px;
+  font-weight: 800;
+  color: #9ca3af;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.attempt-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 2px 0 0 0;
+}
+
+.attempt-timestamp {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 2px 0 0 0;
+}
+
+/* Main Grid Layout */
+.review-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 28px;
+}
+
+@media (max-width: 1024px) {
+  .review-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.review-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.review-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Media Submission Card */
+.media-submission-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.quest-tags-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tags-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quest-num-pill {
+  background: #f3e8ff;
+  color: #7c3aed;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.quest-category-pill {
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.time-cap-pill {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 8px;
+}
+
+.quest-pitch-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.quest-prompt-text {
+  font-size: 14px;
+  color: #4b5563;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+/* Audio Player Box */
+.audio-player-box {
+  background: #f9fafb;
+  border: 1px solid #f3f4f6;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.audio-play-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #047857;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.3);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.audio-play-btn:hover {
+  transform: scale(1.05);
+  background: #065f46;
+}
+
+.audio-info-col {
+  flex: 1;
+}
+
+.audio-file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.audio-file-name {
+  font-weight: 700;
+  color: #111827;
+}
+
+.audio-quality-tag {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.audio-timer {
+  font-weight: 600;
+  color: #374151;
+}
+
+.waveform-bar-wrap {
+  position: relative;
+  height: 24px;
+  background: #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.waveform-fill {
+  height: 100%;
+  background: #a7f3d0;
+  border-radius: 12px 0 0 12px;
+}
+
+.waveform-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #047857;
+}
+
+.audio-telemetry-pills {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.mint-text {
+  color: #059669;
+  font-weight: 600;
+}
+
+/* Script & Oratorical Cues Card */
+.script-cues-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.script-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.script-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-icon {
+  font-size: 18px;
+}
+
+.script-card-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.script-actions-group {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-tool-btn {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.icon-tool-btn:hover {
+  background: #f9fafb;
+}
+
+.script-meta-bar {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 16px;
+  text-align: right;
+}
+
+.script-content-box {
+  background: #f9fafb;
+  border: 1px solid #f3f4f6;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+
+.cue-paragraph {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.cue-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.cue-pill {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-right: 8px;
+}
+
+.cue-mint {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.cue-purple {
+  background: #f3e8ff;
+  color: #6b21a8;
+}
+
+.cue-lavender {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.cue-text {
+  font-style: italic;
+}
+
+.inline-annotations-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  margin-top: 16px;
+}
+
+.annotations-label {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.annotation-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.ann-green {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.ann-blue {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.ann-gray {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+/* Rubric & Feedback Sidebar */
+.rubric-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.rubric-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.rubric-main-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.rubric-scale-sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 2px 0 0 0;
+}
+
+.rubric-version-badge {
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.criteria-block {
+  margin-bottom: 20px;
+}
+
+.criteria-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.criteria-score {
+  color: #059669;
+}
+
+.criteria-sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+}
+
+.score-selector-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.score-btn {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.score-btn:hover {
+  border-color: #047857;
+  color: #047857;
+}
+
+.score-btn.selected {
+  background: #047857;
+  color: #ffffff;
+  border-color: #047857;
+}
+
+/* Calculated Rating Box */
+.calculated-rating-box {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.medal-icon-wrap {
+  font-size: 24px;
+}
+
+.rating-num-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.rating-label-sm {
+  font-size: 10px;
+  font-weight: 800;
+  color: #047857;
+  letter-spacing: 0.05em;
+}
+
+.rating-score-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: #065f46;
+}
+
+.mastery-badge {
+  background: #10b981;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+/* Feedback Textarea Block */
+.feedback-textarea-block {
+  margin-bottom: 20px;
+}
+
+.feedback-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.feedback-block-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.markdown-tag {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.coaching-textarea {
+  width: 100%;
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #111827;
+  outline: none;
+  resize: vertical;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.coaching-textarea:focus {
+  border-color: #10b981;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+}
+
+.feedback-quality-meter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+.quality-text {
+  color: #059669;
+  font-weight: 600;
+}
+
+/* Honors Card */
+.honors-approval-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.honors-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.honors-title-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  flex: 1;
+}
+
+.ec-pill {
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.honors-subtext {
+  font-size: 11px;
+  color: #6b7280;
+  margin: 6px 0 0 24px;
+  line-height: 1.4;
+}
+
+/* Actions */
+.review-actions-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.approve-passport-cta {
+  width: 100%;
+  background: #10b981;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-align: center;
+}
+
+.approve-passport-cta:hover {
+  background: #059669;
+}
+
+.secondary-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.draft-btn {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.revision-btn {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.submitted-success-banner {
+  background: #dcfce7;
+  color: #166534;
+  font-weight: 700;
+  padding: 14px 18px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Mentor Reminder Box */
+.mentor-reminder-box {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.reminder-icon {
+  font-size: 18px;
+}
+
+.reminder-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 2px 0;
+}
+
+.reminder-text {
+  font-size: 11px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.45;
+}

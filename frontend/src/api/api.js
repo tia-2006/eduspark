@@ -85,11 +85,14 @@ export const apiGetMentorSubmissions = (status) => {
 
 export const apiGetSubmissionById = (id) => authFetch(`/submissions/${id}`);
 
+export const apiGetSubmissionReviewDetails = () => authFetch('/submissions/review-details');
+
 export const apiUpdateFeedback = (id, score, mentorFeedback) =>
   authFetch(`/submissions/${id}/feedback`, {
     method: 'PUT',
     body: JSON.stringify({ score, mentorFeedback }),
   });
+
 
 // ── MENTORS ─────────────────────────────────────
 export const apiApplyForMentor = (payload) =>

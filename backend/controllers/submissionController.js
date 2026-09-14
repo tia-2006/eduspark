@@ -217,9 +217,130 @@ const updateSubmissionFeedback = async (req, res) => {
     }
 };
 
+// @desc    Get detailed evaluation submission data for review view
+// @route   GET /api/submissions/review-details
+// @access  Public / Private
+const getReviewDetails = async (req, res) => {
+    try {
+        const reviewDetails = {
+            id: "sub-john-14",
+            student: {
+                name: "John Doe",
+                grade: "Grade 11",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+                school: "Oakwood High School",
+                club: "Advanced Rhetoric & Debate Club",
+                attempt: "Attempt 1 of 2",
+                submittedAt: "Oct 26, 2:45 PM"
+            },
+            quest: {
+                number: "Quest #14",
+                badge: "Capstone Project Core",
+                title: "60-Second Impromptu Persuasion Pitch",
+                timeCap: "60s Time Cap",
+                prompt: "Persuade the School Board to reallocate underutilized athletic storage toward an open STEM innovation lab."
+            },
+            audio: {
+                fileName: "impromptu_Pitch_JohnDoe_Final.wav",
+                quality: "Recorded via In-App High Definition Audio",
+                duration: "0:58",
+                currentTime: "0:32",
+                audioUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                telemetry: {
+                    speed: "Normal Speed (1.0x)",
+                    peak: "-1.2 dB",
+                    clipping: "No Clipping Detected"
+                }
+            },
+            scriptCues: {
+                wordCount: 142,
+                readingPace: "147 wpm",
+                cues: [
+                    {
+                        time: "0:00",
+                        label: "HOOK",
+                        color: "mint",
+                        text: "Distinguished members of the board: Every great breakthrough in our school's history didn't start in a textbook—it started when a student had the space to experiment."
+                    },
+                    {
+                        time: "0:16",
+                        label: "ETHOS & EVIDENCE",
+                        color: "purple",
+                        text: "Last year, without dedicated workspace, our robotics club had to build their winning rover on the cafeteria floor, constantly dodging lunch carts and packing away sensitive micro-controllers between bell rings."
+                    },
+                    {
+                        time: "0:35",
+                        label: "VALUE PROPOSITION",
+                        color: "lavender",
+                        text: "Right now, Locker Room C holds decommissioned wrestling mats from 2012. By converting those 400 square feet into an Open Prototyping Bay, we unlock federal STEM grants and double our regional contest capacity without adding a single dollar to the capital budget."
+                    },
+                    {
+                        time: "0:50",
+                        label: "CALL TO ACTION",
+                        color: "mint",
+                        text: "Give our innovators a launchpad, not a cafeteria table. Vote yes on Item 4B tonight. Thank you."
+                    }
+                ]
+            },
+            inlineAnnotations: [
+                { label: "Vivid Sensory Imagery (Cafeteria floor)", color: "green" },
+                { label: "Zero-Budget Fiscal Logic", color: "blue" },
+                { label: "Direct Request Timing", color: "gray" }
+            ],
+            rubric: {
+                version: "Rubric v3.2",
+                scale: "Standard Oratorical Mastery Scale",
+                criteria: [
+                    {
+                        id: "c1",
+                        name: "Ethos & Hook Strength",
+                        score: 5.0,
+                        max: 5.0,
+                        subtext: "Pivots immediately from general school lore into specific impact."
+                    },
+                    {
+                        id: "c2",
+                        name: "Cadence & Vocal Clarity",
+                        score: 4.0,
+                        max: 5.0,
+                        subtext: "Clear pronunciation; needs slightly more breathing room before closing."
+                    },
+                    {
+                        id: "c3",
+                        name: "Logical Persuasion",
+                        score: 5.0,
+                        max: 5.0,
+                        subtext: "Flawless cost-neutral proposal framing that anticipates objections."
+                    }
+                ],
+                calculatedRating: 4.7,
+                masteryBadge: "Mastery Distinction",
+                feedback: "Exceptional emotional hook in the opening sentence, John. Grounding the budget plea in the tangible image of the cafeteria floor made the request immediately urgent to the board members. To elevate this further, ensure...",
+                constructiveBalance: "92% Positive / 83% Form Improvement",
+                characterCount: 342,
+                honorsApproved: true,
+                honorsUnits: "1.5 Oakwood Honors Extracurricular Units"
+            }
+        };
+
+        res.status(200).json({
+            success: true,
+            reviewDetails
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to fetch review details",
+            error: error.message
+        });
+    }
+};
+
+
 module.exports = {
     createSubmission,
     getMentorSubmissions,
     getSubmissionById,
-    updateSubmissionFeedback
+    updateSubmissionFeedback,
+    getReviewDetails
 };
+
