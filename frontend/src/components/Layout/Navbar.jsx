@@ -20,7 +20,7 @@ export default function Navbar({ user, onLogout, activeRoleTab, onRoleTabChange,
         <input
           className="navbar-search-input"
           type="text"
-          placeholder="Search skills, classes, quizzes..."
+          placeholder="Search oratorical frameworks, chess openings, mentor..."
           value={searchValue}
           onChange={e => setSearchValue(e.target.value)}
         />

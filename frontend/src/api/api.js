@@ -103,6 +103,40 @@ export const apiRejectMentor = (id) =>
 // ── SCHOOL ──────────────────────────────────────
 export const apiGetSchoolDashboard = () => authFetch('/school/dashboard');
 
+export const apiGetSchoolStudents = (params = {}) => {
+  const qs = new URLSearchParams(params).toString();
+  return authFetch(`/school/students${qs ? `?${qs}` : ''}`);
+};
+
+export const apiBatchEndorse = () =>
+  authFetch('/school/batch-endorse', { method: 'POST' });
+
+export const apiPromptStudent = (id) =>
+  authFetch(`/school/students/${id}/prompt`, { method: 'POST' });
+
+export const apiScheduleScrimmage = (data) =>
+  authFetch('/school/scrimmage', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+
+export const apiExportSchoolTelemetry = async () => {
+  const token = getToken();
+  const response = await fetch('/api/school/export', {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!response.ok) throw new Error('Failed to export CSV');
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'oakwood_extracurricular_telemetry.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+};
+
 // ── LOCAL STORAGE HELPERS ───────────────────────
 export const saveSession = (user, token) => {
   localStorage.setItem('eduspark_token', token);

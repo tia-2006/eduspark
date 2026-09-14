@@ -103,6 +103,19 @@ export default function App() {
     }
   };
 
+  const handleRoleTabChange = (roleTab) => {
+    setActiveRoleTab(roleTab);
+    if (roleTab === 'School') {
+      setCurrentPage('school-analytics');
+    } else if (roleTab === 'Mentor') {
+      setCurrentPage('mentor-hub');
+    } else if (roleTab === 'Admin') {
+      setCurrentPage('admin-portal');
+    } else {
+      setCurrentPage('dashboard');
+    }
+  };
+
   return (
     <div className="app-shell">
       <Sidebar
@@ -117,7 +130,7 @@ export default function App() {
           user={session.user}
           onLogout={handleLogout}
           activeRoleTab={activeRoleTab}
-          onRoleTabChange={setActiveRoleTab}
+          onRoleTabChange={handleRoleTabChange}
           sidebarCollapsed={sidebarCollapsed}
         />
         <main className="app-content">
