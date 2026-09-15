@@ -331,6 +331,13 @@
   overflow: hidden;
 }
 
+.youtube-video-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
 .html5-video {
   width: 100%;
   height: 100%;

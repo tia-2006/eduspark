@@ -132,7 +132,8 @@ const getModuleDetails = async (req, res) => {
                 quality: "HD 1080P",
                 duration: "12:45",
                 currentTime: "05:22",
-                videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                videoUrl: "https://www.youtube.com/embed/Unzc731iCUY",
+                youtubeUrl: "https://www.youtube.com/embed/Unzc731iCUY",
                 subtitlesUrl: "#",
                 transcriptUrl: "#"
             },

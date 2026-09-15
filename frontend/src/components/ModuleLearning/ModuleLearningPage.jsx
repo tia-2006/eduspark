@@ -1,13 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { apiGetModuleDetails, apiAnalyzeArgument } from '../../api/api';
 import './ModuleLearningPage.css';
+
+const getYouTubeEmbedUrl = (url) => {
+  const defaultEmbed = "https://www.youtube.com/embed/Unzc731iCUY";
+  if (!url) return defaultEmbed;
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+  if (match && match[1]) {
+    return `https://www.youtube.com/embed/${match[1]}`;
+  }
+  return defaultEmbed;
+};
 
 export default function ModuleLearningPage({ user, onNavigate }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
-  const [subtitlesOn, setSubtitlesOn] = useState(true);
   const [customClaim, setCustomClaim] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzerScores, setAnalyzerScores] = useState({
@@ -16,8 +23,6 @@ export default function ModuleLearningPage({ user, onNavigate }) {
     pathos: 95
   });
   const [activeDrill, setActiveDrill] = useState(null);
-
-  const videoRef = useRef(null);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -32,26 +37,6 @@ export default function ModuleLearningPage({ user, onNavigate }) {
     };
     fetchDetails();
   }, []);
-
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        videoRef.current.play().catch(e => console.log("Autoplay error:", e));
-        setIsPlaying(true);
-      }
-    }
-  };
-
-  const handleSpeedChange = () => {
-    const nextSpeed = playbackSpeed === 1.0 ? 1.25 : playbackSpeed === 1.25 ? 1.5 : playbackSpeed === 1.5 ? 1.8 : 1.0;
-    setPlaybackSpeed(nextSpeed);
-    if (videoRef.current) {
-      videoRef.current.playbackRate = nextSpeed;
-    }
-  };
 
   const handleAnalyzeClaim = async (e) => {
     e.preventDefault();
@@ -166,65 +151,15 @@ export default function ModuleLearningPage({ user, onNavigate }) {
               </div>
             </div>
 
-            {/* HTML5 Interactive Video Box */}
-            <div className="video-viewport">
-              <video
-                ref={videoRef}
-                className="html5-video"
-                src={lesson.videoUrl || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}
-                poster="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80"
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                controls={false}
-                playsInline
+            {/* YouTube Embedded Video Box */}
+            <div className="video-viewport youtube-viewport">
+              <iframe
+                className="youtube-video-iframe"
+                src={getYouTubeEmbedUrl(lesson.youtubeUrl || lesson.videoUrl)}
+                title={lesson.title || "Lesson 3.2: Hooking Your Audience in 15 Seconds"}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
               />
-
-              {!isPlaying && (
-                <div className="video-overlay" onClick={togglePlay}>
-                  <div className="play-button-circle">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="5 3 19 12 5 21 5 3"/>
-                    </svg>
-                  </div>
-                </div>
-              )}
-
-              {/* Custom Video Control Overlay Bar */}
-              <div className="custom-video-controls">
-                <button className="control-btn" onClick={togglePlay} aria-label={isPlaying ? "Pause" : "Play"}>
-                  {isPlaying ? (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                      <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-                    </svg>
-                  ) : (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="5 3 19 12 5 21 5 3"/>
-                    </svg>
-                  )}
-                </button>
-
-                <div className="time-display">
-                  <span>05:22 / 12:45</span>
-                </div>
-
-                <div className="scrubber-track">
-                  <div className="scrubber-fill" style={{ width: '42%' }}></div>
-                </div>
-
-                <button className={`control-pill ${subtitlesOn ? 'active' : ''}`} onClick={() => setSubtitlesOn(!subtitlesOn)}>
-                  CC • {subtitlesOn ? 'ON' : 'OFF'}
-                </button>
-
-                <button className="control-pill" onClick={handleSpeedChange}>
-                  {playbackSpeed}x
-                </button>
-
-                <button className="control-btn" onClick={() => videoRef.current?.requestFullscreen?.()} aria-label="Fullscreen">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-                  </svg>
-                </button>
-              </div>
             </div>
 
             {/* Video Footer bar */}
